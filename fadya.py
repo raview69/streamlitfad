@@ -126,33 +126,68 @@ ax.set_xlabel("Negara", fontsize=12)
 ax.set_ylabel("Jumlah Produksi", fontsize=12)
 st.pyplot(fig)
 ############### For 4 ###############
-left_col, mind_col, right_col = st.columns(3)
+st.sidebar.caption('Pengaturan Jumlah Produksi Data')
+tahh4 = st.sidebar.number_input("Pada tahun: *1971-2015", min_value=1, max_value=None, value=1979)
+aabb = ot[ot.tahun == tahh4]
+atahunn3 = list(aabb['kode_negara'].unique())
+aproduksi3 = list(aabb['produksi'])
+asue = len(aproduksi3)
+atahunbee = []
+with open('kode_negara_lengkap.json', 'r') as kooo:
+    data = json.load(kooo)
+    for element in data['cantik']:
+        for i in range(0, asue):
+            if element['alpha-3'] == atahunn3[0+i]:
+                atahunbee.append(element['name'])
+                break
+aacc = list(zip(atahunbee, aproduksi3))
+aase = sorted(aacc, key=itemgetter(1), reverse=True)
+
+alst_1_neww, alst_2_neww = zip(*aase)
+asue2 = len(alst_1_neww)
+regioon = []
+subregioon = []
+kodenega = []
+with open('kode_negara_lengkap.json', 'r') as kooo2:
+    data = json.load(kooo2)
+    for element in data['cantik']:
+        for i in range(0, asue2):
+            if element['name'] == alst_1_neww[0+i]:
+                regioon.append(element['region'])
+                subregioon.append(element['sub-region'])
+                kodenega.append(element['alpha-3'])
+                break
+aassuiook = []
+for element in alst_2_neww:
+    for i in range(0, asue):
+        if element != 0.0:
+            aassuiook.append(element)
+            break
+aadess = len(aassuiook)
+aacc2 = list(zip(alst_1_neww[:aadess], aassuiook))
+alst_1_neww2, alst_2_neww2 = zip(*aacc2)
+
+left_col, right_col = st.columns(2)
 left_col.subheader("Negara Dengan Produksi Minyak Tertinggi")
-left_col.text("Nama Negara: Saudi Arabia")
-left_col.text("Kode Negara: SAU")
-left_col.text("Region: Asia")
-left_col.text("Sub Region: Western Asia")
-left_col.text("Pada Tahun: 2015")
+left_col.text(f"Nama Negara: {alst_1_neww[0]}")
+left_col.text(f"Kode Negara: {kodenega[0]}")
+left_col.text(f"Region: {regioon[0]}")
+left_col.text(f"Sub Region: {subregioon[0]}")
+left_col.text(f"Produksi Terbesar: {alst_2_neww[0]}")
 ot = pd.read_csv('produksi_minyak_mentah.csv')
-absau = ot[ot.kode_negara == 'SAU']
+absau = ot[ot.kode_negara == kodenega[0]]
 left_col.dataframe(absau)
-
-mind_col.subheader("Negara Dengan Produksi Minyak Terendah")
-mind_col.text("Nama Negara: Slovenia")
-mind_col.text("Kode Negara: SVN")
-mind_col.text("Region: Europe")
-mind_col.text("Sub Region: Southern Europe")
-mind_col.text("Pada Tahun: 2000")
+aloio = aadess - 1
+right_col.subheader("Negara Dengan Produksi Minyak Terendah")
+right_col.text(f"Nama Negara: {alst_1_neww2[aloio]}")
+right_col.text(f"Kode Negara: {kodenega[aloio]}")
+right_col.text(f"Region: {regioon[aloio]}")
+right_col.text(f"Sub Region: {subregioon[aloio]}")
+right_col.text(f"Produksi Terbesar: {alst_2_neww2[aloio]}")
 ot = pd.read_csv('produksi_minyak_mentah.csv')
-abssvn = ot[ot.kode_negara == 'SVN']
-mind_col.dataframe(abssvn)
+abssvn = ot[ot.kode_negara == kodenega[aloio]]
+right_col.dataframe(abssvn)
 
-right_col.subheader("Negara Dengan Produksi Minyak Nol")
-right_col.text("Nama Negara: Belgium")
-right_col.text("Kode Negara: BEL")
-right_col.text("Region: Europe")
-right_col.text("Sub Region: Western Europe")
-right_col.text("Pada Tahun: -")
-ot = pd.read_csv('produksi_minyak_mentah.csv')
-absblr = ot[ot.kode_negara == 'BEL']
-right_col.dataframe(absblr)
+st.subheader("Negara Dengan Produksi Minyak Nol")
+aabbeeek = ot[ot.tahun == tahh4][ot.produksi == 0.0]
+st.dataframe(aabbeeek)
