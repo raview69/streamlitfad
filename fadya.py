@@ -16,7 +16,7 @@ image = Image.open('3.png')
 st.image(image)
 ############### title ###############)
 
-############### sidebar ###############
+############### sidebarr ###############
 
 
 st.sidebar.title("Fadya Zalfa Rahmanita\n12220152")
